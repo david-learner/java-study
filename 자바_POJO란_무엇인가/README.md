@@ -24,10 +24,10 @@ POJO는 Plain Old Java Object의 약자이며 평범하고 오래된 자바 객�
 애노테이션도 포함될 수 없다는데 왜 그런지 잘 모르겠다.
 
 > 1. Extend prespecified classes, as in
-> 
->       `public class Foo extends javax.servlet.http.HttpServlet { ...`
+>
+>       ```public class Foo extends javax.servlet.http.HttpServlet { ...```
 > 2. Implement prespecified interfaces, as in
-> 
+>
 >       `public class Bar implements javax.ejb.EntityBean { ...`
 > 3. Contain prespecified annotations, as in
 >
