@@ -43,3 +43,4 @@ POJO를 이용한 POJO 프로그래밍은 객체지향의 장점을 살려 프�
 * http://itewbm.tistory.com/entry/POJOPlain-Old-Java-Object
 * http://bsnippet.tistory.com/17
 * https://en.wikipedia.org/wiki/Plain_old_Java_object
+* https://www.quora.com/What-is-the-difference-between-POJO-JavaBeans-VO
