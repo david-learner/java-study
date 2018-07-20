@@ -1,7 +1,5 @@
 # POJO란 무엇인가
 
-POJO는 평범하고 오래된 자바 객체라는 뜻을 가진 Plain Old Java Object의 약자이다.
-
 ## POJO의 등장
 
 EJB라는 기업용 애플리케이션 개발을 돕는 것이 있었다.
@@ -17,6 +15,8 @@ POJO 프로그래밍은 객체지향 원리에 따라 만들어진 자바 언어
 POJO 기반 프레임워크로는 Hibernate과 Spring이 있다.
 
 ## POJO의 정의
+
+POJO는 Plain Old Java Object의 약자이며 평범하고 오래된 자바 객체라는 뜻이다.
 
 자바 언어 명세에서 강제하는 것을 제외하고 어떠한 제약이 없는 자바 객체를 말한다.
 
