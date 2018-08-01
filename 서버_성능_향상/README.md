@@ -139,14 +139,17 @@ ref : https://www.cubrid.org/manual/ko/9.1.0/ha.html
 * 수평 파티셔닝은 sharding과 비슷해보이지만 일반적으로 하나의 DB내에서 record를 기준으로 table을 분리한다. 이로인해 각 테이블의 크기가 감소하고 인덱스의 크기가 감소하므로 성능 향상을 기대할 수 있다.
 
 ![horizontal_partioning](images/horizontal_partioning.png)
+ref : https://www.cubrid.org/manual/ko/9.3.0/shard.html
 
 * **sharding**이란 물리적으로 다른 데이터베이스에 데이터를 수평 분할방식으로 분산 저장하는 것이다. sharding의 경우 성능상 이유뿐 아니라 하나의 데이터베이스 인스턴스에 담지 못하는 큰 데이터를 분산하여 처리하기 위해 사용한다.
 
 ![sharding](images/sharding.png)
+ref : https://www.cubrid.org/manual/ko/9.3.0/shard.html
 
 ## N대의 서버 Session 이슈
 
 ![session_duplicate](images/session_duplicate.jpg)
+ref : pobi
 
 * Quiz : 사용자가 1번 서버에 로그인 요청을 보내 로그인 하면 sessionId가 "abc"란 이름으로 서버에 session이 생성된다. 로그인을 완료한 후 다음 요청에 대해 Load Balancer가 1번 서버가 아닌 2번 서버로 요청을 보낸다면 어떻게 될까?
 
@@ -160,12 +163,40 @@ ref : https://www.cubrid.org/manual/ko/9.1.0/ha.html
 
 * **sticky session**
 
-  * 요청에 대한 응답을 보낼 때, cookie에 해당 서버에 대한 정보를 담아서 다음 요청 때 로드밸런서가 동일한 서버로 보내게 하는 기술
+  * 사용자 요청에 대한 응답을 보낼 때, cookie에 해당 서버에 대한 정보를 담아서 다음 요청 때 로드밸런서가 cookie에 저장된 서버 정보를 통해 동일한 서버에 사용자가 연결되게 하는 기술
 
 * **session clustering**
 
   * n대의 서버가 서로 세션 정보를 공유하여 모든 서버 해당 사용자를 인식하고 요청을 처리할 수 있다.
-  * tomcat의 경우 multicast 방식으로 session 정보를 전파하여 session clustering이 이루어 진다.
+
+  * tomcat의 경우 multicast 방식으로 session 정보를 전파하는 session clustering도 지원한다.
+
+* session server
+  
+  * n대의 서버가 세션을 참조하기 위한 서버
+  * n대의 서버가 세션 정보를 위해 빈번하게 접근하므로 redis와 같은 in-memory 기반의 데이터 저장소가 쓰인다.
+
+## N대의 서버 Cache 이슈
+
+![cache_duplicate](images/cache_duplicate.jpg)
+ref : pobi
+
+* 현재 자신이 구현하고 있는 서비스 중에서 cache를 적용하면 좋은 데이터가 있다면 무엇인가?
+  * 자주 변경되지 않는 static file들(html, css, js, image 등)
+  * 페이스북의 경우 첫 화면에 보여줄 피드 일부(검증X)
+
+* n대의 서버에서 중복 관리되는 cache 데이터를 효과적으로 관리하기 위한 방법은?
+  * 캐시 데이터만 관리하는 별도의 캐시 서버를 구축한다.
+
+* Memcached 또는 redis를 활용한 cache 적용 전략은?
+  * 만약 cache 서버가 1대라면 자주 사용되는 데이터 위주로 cache를 적용한다.
+  * cache 서버가 2대 이상이라면 ?
+  1. range, 범위로 구분하여 데이터를 분산하여 cache를 적용한다. 범위가 너무 크면 cache 서버별 사용 리소스가 크게 차이날 수 있다. 예를 들어 1번 서버 range에 속하는 데이터가 집중 cache hit되면 1번 서버 사용 리소스가 높아지는 것이다.
+  2. consistent hashing, 애초에 웹 캐시를 위해 고안된 방법이다. 자세한 방법은 [링크](https://www.joinc.co.kr/w/man/12/hash/consistent)
+  3. indexed, 캐싱된 데이터가 어디있는지 index해둔 서버를 별도로 구축하는 방법
+
+
+
 
 ### 참고
 https://docs.microsoft.com/ko-kr/biztalk/core/what-is-scalability
@@ -196,4 +227,10 @@ http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#page-header
 
   * http://bcho.tistory.com/794
   * http://12bme.tistory.com/196
-  * 
+
+* cache
+
+  * https://charsyam.wordpress.com/2016/07/27/%EC%9E%85-%EA%B0%9C%EB%B0%9C-%EC%99%9C-cache%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%EA%B0%80/
+  * http://ojava.tistory.com/70
+  * https://www.joinc.co.kr/w/man/12/hash/consistent
+  * https://www.slideshare.net/OnGameServer/ss-10451675
