@@ -1,11 +1,13 @@
 # 서버 추가를 통한 성능 향상
+writer : learner
 
 ## Scalability(확장성)이란
 
 비즈니스 요구에 맞게 시스템을 확장할 수 있는 용이성을 말한다.
 
-수평적 확장을 기준으로 확장성 예시
-    기준으로 100명의 요청을 처리할 수 있는 서버 1대를 사용하고 있을 때, 1000명의 요청을 처리할 수 있게 서버를 n대로 확장시키기 쉬우면 확장성이 높은 것이고 그렇지 않으면 확장성이 낮은 것이다.
+* 수평적 확장을 기준으로 확장성 예시
+
+    100명의 요청을 처리할 수 있는 서버 1대를 사용하고 있을 때, 1000명의 요청을 처리할 수 있게 서버를 n대로 확장시키기 쉬우면 확장성이 높은 것이고 그렇지 않으면 확장성이 낮은 것이다.
 
 
 ## Scale Up, Scale Out 각각의 장단점 및 차이점
@@ -13,14 +15,185 @@
 ![scale_up_scale_out](images/gabia_scale_up_scale_out.jpg)
 ref : http://library.gabia.com/contents/infrahosting/1222
 
-### Scale up
-
-
 ### Scale out
 
+* 서버 대수를 늘려 처리 능력을 확장하는 것이다.
+* 수평적 확장이라 말한다.
+* 예시
+
+    AWS에서 EC2 인스턴스를 1대만 가지고 서비스 중이다. 이 때, 더 많은 트래픽을 처리하기 위해 EC2 인스턴스를 2대 더 추가한다면 scale out에 해당한다.
+* 장점
+  * scale out 대비 성능 증가에 따른 비용이 적게 든다.
+  * 1대의 서버에 장애가 생겨도 다른 서버에서 대신 요청을 처리할 수 있다.
+  
+* 단점
+  * n대의 서버에 트래픽을 균등하게 배분하기 위해 `Load Balancer`와 같은 장비가 필요하다.
+  * n대의 서버가 동일한 요청에 대해 일관된 응답을 하려면 모든 서버는 동일한 데이터를 가지고 있어야 한다. 따라서 n대의 서버는 데이터 동기화에 따른 오버헤드가 발생한다. (별도의 DB, Session 서버를 두지 않는 이상)
+
+### Scale up
+
+* 현재 운용중인 서버의 사양을 높여 처리 능력을 확장하는 것이다.
+* 수직적 확장이라 말한다.
+* 예시
+
+    AWS에서 EC2 인스턴스를 1대만 가지고 서비스 중이다. 이 때, 더 많은 트래픽을 처리하기 위해 현재 운용중인 EC2 인스턴스의 사양(Cpu, RAM, SSD 등)을 업그레이드한다면 scale up에 해당한다.
+* 장점
+  * `Load Balancer`와 같은 별도의 트래픽 분배 장치를 둘 필요가 없다.
+  * n대의 서버로 분리하는 것이 아니라 1대의 서버의 사양만 증가시키므로 분산처리에 대해 고민하지 않아도 되어 서버 구축이 용이하다.
+
+* 단점
+  * 장애 발생시 서비스가 중단될 수 있다.
+  * sacle out 대비 확장 비용 증가폭이 크다.
+
+## SPOF(Single Point of Failure) : 단일 장애점
+
+* 시스템 구성 요소 중에서 동작하지 않으면 전체 시스템이 중단되는 요소
+* 예시
+
+  기상청의 웹 서버는 1대의 날씨 DB서버를 통해 날씨 정보를 사용자들에게 알려준다. 이 때 날씨 DB서버가 고장나면 웹 서버는 사용자가 요청하는 날짜에 대한 날씨를 제공하지 못하므로 시스템이 중단된다.
+
+* 서버 구조상 이중화 되지 않은 곳은 SPOF가 발생할 수 있다.
+
+## SPOF 발생 지점 찾기
+
+![spof_server](images/spof_server.jpg)
+ref : pobi
+
+* 2번, WS(NGINX)
+* 3번, WAS(Tomcat)
+* 4번, DB(MySql)
+* 1번과 2번 사이, Router - 외부망과 연결되는 지점인데 라우터가 고장나면 외부로부터 오는 요청을 서버에서 받을 수 없다.
+
+## SPOF 이슈 해결 방법
+
+* SPOF가 일어나는 모든 지점을 이중화한다.
+* Failover를 통해 장애가 일어난 서버가 자동으로 대기 서버로 전환되어 서비스가 정상동작되게 한다.
+
+### Failover
+
+* 장애발생시 대기중인 서버를 운영서버로 전환하는 것
+
+### Failback
+
+* 장애발생한 서버가 운영서버에서 제외되고, 장애 복구된 다음 다시 서비스 그룹에 포함되는 것
+* 아래 그림을 보면 죽었던 node A가 master가 아닌 slave로 서비스 그룹에 포함된 것을 볼 수 있다.
+
+![failover_failback](images/failover_failback.png)
+ref : https://www.cubrid.org/manual/ko/9.1.0/ha.html
+
+## Load Balancing
+
+### Load Balancing
+
+* 부하 분산을 위해서 가상(virtual) IP를 통해 여러 서버에 접속하도록 분배하는 기능이다.
+
+### Load Balancer
+
+* n대의 서버에게 균등하게 트래픽을 분산시키는 행위를 하는 장비(H/W, S/W)
+* H/W로는 L4스위치, L7스위치 등이 있다.
+* S/W로는 HAProxy가 있다.
+
+### L4, L7의 역할 및 차이점
+
+* L4
+  * Transport Layer에서 TCP/UDP의 포트를 기준으로 패킷을 구분하여 서버에 전송한다.
+  * IP주소가 동일하여도 포트가 다르면 패킷을 서로 다른 서버에 보낼 수 있다.
+
+* L7
+  * IP주소, TCP/UDP port정보, 패킷 내용까지 참조하여 각 패킷을 서로 다른 서버에 전송할 수 있다.
+
+* 차이점
+  
+    L4와 L7 스위치 모두 로드밸런싱이라는 핵심기능을 가지고 있지만 커버하는 Layer 특성상(L4는 Layer4까지, L7은 Layer7까지) L4보다 L7 스위치가 더 많은 정보를 바탕으로 정교한 로드밸런싱이 가능하다.
+
+### HAProxy
+
+* 기존 하드웨어 스위치를 대체하는 소프트웨어 로드밸런서다.
+* 네트워크 스위치에서 제공되는 L4, L7 기능 및 로드밸런서 기능을 제공한다.
+
+### Proxy Server
+
+* **proxy server**는 실서버와 클라이언트 사이를 중계해주는 역할을 하는 서버다. 이 때 중계기로서 대신 요청을 주고 받는 기능을 proxy라고 한다.
+
+* **forward proxy**
+  * 클라이언트의 요청을 받아 단순히 요청하는 곳으로 중계하는 역할
+  * 단, 클라이언트는 외부 서버에 대해 요청을 보낼 때 forward proxy server로 요청을 보내게 되어 있어야 한다.
+* **reverse proxy**
+  * 외부에서 직접적으로 접근하지 못하는 서버 자원을 대신 요청하여 중계하는 역할
+  * revere proxy server뒤에서 실제 자원을 제공하는 서버는 별도로 있지만, 마치 reverse proxy server가 제공하는 것처럼 보여진다.
+
+## Database
+
+### master/slave 구조
+
+* 하나의 DB에 부하가 몰리는 것을 방지하며 Master의 내용을 slave에 복제하여 백업 기능을 가지는 구조다.
+
+* 일반적으로 master DB에 insert/update/delete가 수행되며 slave에는 select 쿼리가 수행된다.
+
+### Sharding
+
+* sharding에 앞서 partioning에 대해 알아보자. **partioning**(이하 분할)이란 퍼포먼스(performance), 가용성(availability) 또는 정비용이성(maintainability)을 목적으로 데이터들을 다수의 테이블로 쪼개는 행위다.
+
+* partioning에는 Column별로 쪼개는 수직 분할과 record별로 쪼개는 수평 분할이 있다.
+
+* 수평 파티셔닝은 sharding과 비슷해보이지만 일반적으로 하나의 DB내에서 record를 기준으로 table을 분리한다. 이로인해 각 테이블의 크기가 감소하고 인덱스의 크기가 감소하므로 성능 향상을 기대할 수 있다.
+
+![horizontal_partioning](images/horizontal_partioning.png)
+
+* **sharding**이란 물리적으로 다른 데이터베이스에 데이터를 수평 분할방식으로 분산 저장하는 것이다. sharding의 경우 성능상 이유뿐 아니라 하나의 데이터베이스 인스턴스에 담지 못하는 큰 데이터를 분산하여 처리하기 위해 사용한다.
+
+![sharding](images/sharding.png)
+
+## N대의 서버 Session 이슈
+
+![session_duplicate](images/session_duplicate.jpg)
+
+* Quiz : 사용자가 1번 서버에 로그인 요청을 보내 로그인 하면 sessionId가 "abc"란 이름으로 서버에 session이 생성된다. 로그인을 완료한 후 다음 요청에 대해 Load Balancer가 1번 서버가 아닌 2번 서버로 요청을 보낸다면 어떻게 될까?
+
+  * 2번 서버의 세션 테이블에도 동일한 사용자에 대한 sessionId가 등록된다. 즉, 1번 서버의 세션 테이블과 중복되는 것이다.
+
+* 서버가 1대에서 n대로 증가하는 경우 발생하는 session 이슈를 해결할 수 있는 방법은?
+
+  * n대의 서버가 서로 session table을 동기화하여 동일한 상태를 유지한다. (session clustering)
+  * 별도의 session 서버를 두어 관리한다.
+  * 운영 서버 앞단에 로드밸런서를 두고 sticky session을 이용하여 정해진 서버로 보낸다.
+
+* **sticky session**
+
+  * 요청에 대한 응답을 보낼 때, cookie에 해당 서버에 대한 정보를 담아서 다음 요청 때 로드밸런서가 동일한 서버로 보내게 하는 기술
+
+* **session clustering**
+
+  * n대의 서버가 서로 세션 정보를 공유하여 모든 서버 해당 사용자를 인식하고 요청을 처리할 수 있다.
+  * tomcat의 경우 multicast 방식으로 session 정보를 전파하여 session clustering이 이루어 진다.
 
 ### 참고
 https://docs.microsoft.com/ko-kr/biztalk/core/what-is-scalability
 http://www.ktword.co.kr/abbr_view.php?m_temp1=868
 http://library.gabia.com/contents/infrahosting/1222
 http://idchowto.com/?p=29915
+https://m.blog.naver.com/PostView.nhn?blogId=islove8587&logNo=220548900044&proxyReferer=https%3A%2F%2Fwww.google.co.kr%2F
+http://www.thisisgame.com/webzine/news/nboard/4/?n=54955
+https://www.slideshare.net/heungrae_kim/14-jco-by-javacafe?qid=0b505c3f-9f9e-4392-9484-4eee1c72ea19&v=&b=&from_search=2
+https://www.cubrid.org/manual/ko/9.1.0/ha.html
+http://klero.tistory.com/entry/L2-L3-L4-L7-%EC%8A%A4%EC%9C%84%EC%B9%98-%EA%B5%AC%EB%B6%84-%EB%B0%8F-%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8-%EC%84%A4%EB%AA%85
+https://sarc.io/index.php/miscellaneous/758-osi-7-l4-l7
+http://soul0.tistory.com/140
+https://d2.naver.com/helloworld/284659
+https://ko.wikipedia.org/wiki/%ED%94%84%EB%A1%9D%EC%8B%9C_%EC%84%9C%EB%B2%84
+http://happymemoryies.tistory.com/13
+http://idess.tistory.com/6
+https://code.i-harness.com/ko/q/36d98
+http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#page-header
+
+* db
+
+  * https://www.xpressengine.com/forum/20657238
+  * http://theeye.pe.kr/archives/1917
+  * https://www.cubrid.org/manual/ko/9.3.0/shard.html
+
+* session
+
+  * http://bcho.tistory.com/794
+  * http://12bme.tistory.com/196
+  * 
