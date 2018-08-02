@@ -106,6 +106,8 @@ ref : https://www.cubrid.org/manual/ko/9.1.0/ha.html
   
     L4와 L7 스위치 모두 로드밸런싱이라는 핵심기능을 가지고 있지만 커버하는 Layer 특성상(L4는 Layer4까지, L7은 Layer7까지) L4보다 L7 스위치가 더 많은 정보를 바탕으로 정교한 로드밸런싱이 가능하다.
 
+![osi7layer](images/osi7layer.jpg)
+
 ### HAProxy
 
 * 기존 하드웨어 스위치를 대체하는 소프트웨어 로드밸런서다.
@@ -194,8 +196,6 @@ ref : pobi
   1. range, 범위로 구분하여 데이터를 분산하여 cache를 적용한다. 범위가 너무 크면 cache 서버별 사용 리소스가 크게 차이날 수 있다. 예를 들어 1번 서버 range에 속하는 데이터가 집중 cache hit되면 1번 서버 사용 리소스가 높아지는 것이다.
   2. consistent hashing, 애초에 웹 캐시를 위해 고안된 방법이다. 자세한 방법은 [링크](https://www.joinc.co.kr/w/man/12/hash/consistent)
   3. indexed, 캐싱된 데이터가 어디있는지 index해둔 서버를 별도로 구축하는 방법
-
-
 
 
 ### 참고
