@@ -198,6 +198,36 @@ ref : pobi
   3. indexed, 캐싱된 데이터가 어디있는지 index해둔 서버를 별도로 구축하는 방법
 
 
+## Node.js VS tomcat
+
+### Node.js
+
+* Node.js는 single thread 기반으로 동작하는 고성능 비동기 IO(Async / Non-blocking IO)를 지원하는 네트워크 서버이다.
+
+* event 기반 프로그래밍 모델을 사용하고 있다.
+
+* Javascript 기반이고 개발구조가 단순화되어 있어 빠르게 개발이 가능하다. FrontEnd(FE) 개발자 입장에서는 Javascript로 BackEnd(BE) 개발이 가능하다보니 굳이 백엔드를 위해 Javascript를 다루지 않는 엔지니어를 뽑을 필요 없으며 성능상의 이점보다 Learning Cruve나 조직내 FE/BE 기술통합의 이점을 더 크게 생각할 수 있다.
+
+### single thread 기반인 Node.js의 동작방식은?
+
+![node_architecture](images/node_architecture.png)
+
+* Node.js는 V8 Javascript 엔진을 기본으로 동작한다. 구글의 chrome 브라우저에서 사용된다.
+
+![node_internal](images/node_internal.png)
+
+* Node.js가 사용자 요청을 처리하는 내부 동작은 위 그림과 같다.
+1. 사용자 요청은 Node.js의 **event Queue**에 들어간다.
+2. single thread로 동작하는 **event loop**는 event queue에서 요청을 하나 꺼내어 처리한다.
+3. 이 때, DB, File IO와 같이 **blocking IO**가 발생하는 일들은 내부의 **thread pool**에 있는 하나의 thread에 위임한다. 즉, 내부적으로는 node.js도 multi thread를 활용하는 것이다. 만약 내부적으로 multi thread를 이용하지 않는다면 blocking IO가 필요한 요청이 올 때마다 event loop는 해당 요청을 처리하기 위해 잠시 멈추어야 한다. sinlge thread의 빠른 처리 이점이 사라지는 것이다.
+4. 처리된 결과는 다시 사용자에게 응답으로 반환된다.
+
+### multi thread 기반인 Tomcat의 동작방식은?
+
+
+### 각 서버의 장단점을 비교하고 사용하기 적합한 방식은?
+
+
 ### 참고
 https://docs.microsoft.com/ko-kr/biztalk/core/what-is-scalability
 http://www.ktword.co.kr/abbr_view.php?m_temp1=868
@@ -208,6 +238,7 @@ http://www.thisisgame.com/webzine/news/nboard/4/?n=54955
 https://www.slideshare.net/heungrae_kim/14-jco-by-javacafe?qid=0b505c3f-9f9e-4392-9484-4eee1c72ea19&v=&b=&from_search=2
 https://www.cubrid.org/manual/ko/9.1.0/ha.html
 http://klero.tistory.com/entry/L2-L3-L4-L7-%EC%8A%A4%EC%9C%84%EC%B9%98-%EA%B5%AC%EB%B6%84-%EB%B0%8F-%EA%B8%B0%EB%B3%B8%EC%A0%81%EC%9D%B8-%EC%84%A4%EB%AA%85
+https://www.freeism.co.kr/wp/archives/698
 https://sarc.io/index.php/miscellaneous/758-osi-7-l4-l7
 http://soul0.tistory.com/140
 https://d2.naver.com/helloworld/284659
@@ -224,13 +255,14 @@ http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#page-header
   * https://www.cubrid.org/manual/ko/9.3.0/shard.html
 
 * session
-
   * http://bcho.tistory.com/794
   * http://12bme.tistory.com/196
 
 * cache
-
   * https://charsyam.wordpress.com/2016/07/27/%EC%9E%85-%EA%B0%9C%EB%B0%9C-%EC%99%9C-cache%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%EA%B0%80/
   * http://ojava.tistory.com/70
   * https://www.joinc.co.kr/w/man/12/hash/consistent
   * https://www.slideshare.net/OnGameServer/ss-10451675
+
+* Nodejs, Tomcat
+  * https://developers.google.com/v8/
