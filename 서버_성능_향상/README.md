@@ -197,7 +197,6 @@ ref : pobi
   2. consistent hashing, 애초에 웹 캐시를 위해 고안된 방법이다. 자세한 방법은 [링크](https://www.joinc.co.kr/w/man/12/hash/consistent)
   3. indexed, 캐싱된 데이터가 어디있는지 index해둔 서버를 별도로 구축하는 방법
 
-
 ## Node.js VS tomcat
 
 ### Node.js
@@ -224,6 +223,10 @@ ref : pobi
 
 ### multi thread 기반인 Tomcat의 동작방식은?
 
+![tomcat_architecture1](images/tomcat_architecture1.png)
+![tomcat_architecture2](images/tomcat_architecture2.png)
+* tomcat의 내부는 위의 그림과 같다.
+* 사용자의 요청이 들오면 
 
 ### 각 서버의 장단점을 비교하고 사용하기 적합한 방식은?
 
@@ -266,3 +269,8 @@ http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#page-header
 
 * Nodejs, Tomcat
   * https://developers.google.com/v8/
+  * http://bcho.tistory.com/881
+  * http://windowx.tistory.com/entry/apache-tomcat-diagram
+  * http://linux.systemv.pe.kr/tomcat-7-%EA%B5%AC%EC%A1%B0/
+  * https://www.slideshare.net/jieunsys/ss-56543446
+  * 
