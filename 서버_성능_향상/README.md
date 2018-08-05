@@ -226,10 +226,39 @@ ref : pobi
 ![tomcat_architecture1](images/tomcat_architecture1.png)
 ![tomcat_architecture2](images/tomcat_architecture2.png)
 * tomcat의 내부는 위의 그림과 같다.
-* 사용자의 요청이 들오면 
+* 사용자의 요청이 서버에 도달하면, socket을 추상화시킨 HTTP Connector를 통해 사용자의 요청이 웹 애플리케이션까지 도달한다.
+* Conncetor들은 Thread Pool에서 관리되며, 한 사용자의 요청은 하나의 Connector가 담당한다. 동시다발적으로 다수의 사용자가 요청을 보내면 다수의 Connector가 사용자의 요청을 처리한다.
+* A라는 connector가 사용자B의 요청을 처리하고, 사용자B에게 보낼 응답까지 담당한다.
+* Connetor는 tomcat 서버 시작시 최소 개수를 정할 수 있으며, 필요하면 지정한 최대 개수만큼 Connector를 생성할 수 있다. 사용량이 적어져 사용자의 요청을 처리하지 않는 connector들은 idle 상태로 전환되며 최소 개수까지 줄어들 수 있다. 이는 모두 tomcat 서버에서 세팅이 가능하다.
 
 ### 각 서버의 장단점을 비교하고 사용하기 적합한 방식은?
 
+* single thread 기반 nodejs는 CPU 작업이 많은 웹 애플리케이션에서는 사용을 자제해야 한다. blocking io function을 사용하는 작업은 내부의 multi thread에 맡기지만 그게 아닌 작업들은 single thread로 처리한다. 이 때 CPU 사용이 많은 하나의 요청을 처리하는 데 작업 시간이 길어질테고, 뒤에 다른 요청들이 지연될 것이다. 그러나 websocket.io을 이용한 채팅서비스를 비교적 쉽게 만들 수 있거나 Single Page App 개발에 적합하다.
+
+* multi thread 기반 tomcat은 대규모의 사용자 요청과 로직의 복잡도가 높아 CPU 사용률이 높은 작업의 경우 tomcat을 사용하면 좋다. 다만, thread pool에서 대기중인 connector들이 즉각적으로 요청 처리 후 사라지는 게 아니라 비교적 자원낭비가 있을 수 있다.
+
+## Cache
+cache란 빈번히 사용되는 데이터를 특정 장소(일반적으로 읽기 속도가 더 빠른 저장장치)에 복사해두어 데이터 요청에 대해 더 빠른 응답을 할 수 있게 하는 기술
+
+### 어떤 성격의 데이터를 cache하는 것이 적합한가?
+* 변화가 적은 static file들
+  * image, css, js 등
+* 게시판의 최신 글들
+  * 보통 게시판을 접속하면 사용자들이 처음보는 화면은 최신 게시글들 이기 때문에
+
+### 캐시 교체 알고리즘인 FIFO, LRU, LFU 는 무엇이며 어느 경우에 적합한가?
+
+아래의 알고리즘들은 효율적인 캐시 데이터 저장공간 운용을 위해 캐시 데이터를 삭제할 때 어떤 데이터를 삭제할지 고르는 기준이 된다.
+
+* FIFO (First In First Out)
+  * 먼저 저장되었던 순서대로 데이터를 교체한다. 제일 먼저 저장되었던 캐시 데이터가 제일 먼저 교체된다.
+  * FIFO는 상대적으로 매우 단순한 구조를 가진다. 비교적 복잡한 캐시 교체 알고리즘 연산을 수행할만큼 자원이 허락하지 않는다면 FIFO 알고리즘 사용을 고려할 수 있다. 일관된 순서를 유지하며 데이터를 사용할 경우 효율적이다.
+
+* LRU (Least Recently Used)
+  * 가장 오래 사용되지 않은 데이터를 교체한다. 일반적인 상황에서 가장 효율이 좋은 알고리즘.
+
+* LFU (Least Frequently Used)
+  * 가장 적게 사용된 데이터를 교체한다. 몇 번 사용되었는지 count 해줘야 한다.
 
 ### 참고
 https://docs.microsoft.com/ko-kr/biztalk/core/what-is-scalability
@@ -273,4 +302,12 @@ http://httpd.apache.org/docs/2.4/mod/mod_proxy.html#page-header
   * http://windowx.tistory.com/entry/apache-tomcat-diagram
   * http://linux.systemv.pe.kr/tomcat-7-%EA%B5%AC%EC%A1%B0/
   * https://www.slideshare.net/jieunsys/ss-56543446
+  * http://jang8584.tistory.com/14
+  * https://tomcat.apache.org/tomcat-6.0-doc/config/executor.html
+  * http://ttlnews.blogspot.com/2016/02/tomcat-7-request-processing-threading.html
+
+* Cache
+  * https://ko.wikipedia.org/wiki/%EC%BA%90%EC%8B%9C
+  * http://onecellboy.tistory.com/260
+  * https://github.com/clojure/core.cache/wiki/FIFO
   * 
