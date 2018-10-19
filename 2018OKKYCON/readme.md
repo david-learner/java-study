@@ -1,7 +1,3 @@
----
-
----
-
 # 2018 OKKYCON - The Real TDD
 
 연사진
