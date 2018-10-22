@@ -1,0 +1,52 @@
+# 백기선님의 스프링 핵심기술 인프런 강의 정리
+
+## IoC 컨테이너 1부 : 스프링 IoC 컨테이너와 빈
+
+* 스프링이란?
+
+    소규모 애플리케이션 또는 기업용 **애플리케이션을 자바로 개발하는 데** 있어 유용하고 **편리한 기능을 제공하는 프레임워크**
+
+* IoC란?
+
+    Inversion of Control, 의존 관계 주입(Dependency Injection)이라고도 한다.
+
+    의존 객체를 직접 생성하지 않고 주입받아 사용한다.
+
+    생성자 주입의 경우 스프링이 없어도 개발자가 직접 주입할 수 있다.
+
+> DI의 종류
+> * Constructor Injection
+> * Setter Injection
+> * Interface-based Injection
+> * Service Locator Injection
+
+* BeanFactory
+
+    IoC의 가장 핵심 클래스
+
+* Bean
+
+    Spring IoC 컨테이너가 관리하는 객체
+
+  * 해당 객체가 Bean인지 아닌지 어떻게 알 수 있는가?
+
+    IoC 컨테이너에 등록되었는가 아닌가에 따라 달라진다
+
+  * 컨테이너로부터 의존성 주입을 받으려면 Bean이어야 한다
+
+* Spring IoC 컨테이너에 등록된 Bean들은 기본적으로 Singleton Scope를 가지는 Bean으로 등록된다
+
+* Scope  
+  * Singleton : 하나만 생성되어 재사용한다
+  * ProtoType : 매번 새로운 객체를 생성한다
+  * Singleton의 이점
+    * 하나만으로 재사용하기 때문에 메모리 절약
+    * 이미 컨테이너에서 만들어진 객체이기 때문에 Runtime시 성능 최적화에 유리함
+
+* 라이프 사이클 인터페이스
+  * Spring IoC 컨테이너에 등록된 Bean에만 해당된다
+  * Bean이 생성, 소멸될 때 다른 처리를 할 수 있다
+
+* ApplicationContext
+  * BeanFactory를 상속받는다
+  * BeanFactory에 비해 다양한 기능을 가지고 있다
