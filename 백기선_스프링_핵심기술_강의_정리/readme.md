@@ -50,3 +50,46 @@
 * ApplicationContext
   * BeanFactory를 상속받는다
   * BeanFactory에 비해 다양한 기능을 가지고 있다
+
+## IoC 컨테이너 2부 : Application Context 와 다양한 빈 설정
+
+* SpringBoot의 장점
+
+  dependency 관리
+
+* Spring IoC 컨테이너는 **빈 설정 파일**이 있어야 한다
+
+![beanConfig](images/beanConfig.jpg)
+
+* Application.xml에 하나씩 빈을 등록하는 것은 고전적인 방식
+* 빈의 스코프
+  * protoType : 매번 새로운 객체를 생성
+  * request : 요청당 새로운 객체를 생성
+  * session : 세션당 새로운 객체를 생성
+  * singleton : 하나의 객체로 재사용함
+
+* xml 파일에서 일일이 빈을 등록하는 게 번거로워서 등장한 것이 " "component-scan"이다
+
+* @Component 애노테이션이 붙은 클래스는 빈으로 등록된다
+* @Component를 확장한 애노테이션 4가지
+  * Controller
+  * Repository
+  * Service
+  * Indexed
+
+* 의존성 주입을 받을 때 사용되는 애노테이션
+  * Autowired
+  * Inject : 또 다른 의존성 주입이 필요함
+  * Resource
+
+위의 각 애노테이션의 차이점은 다음에서 확인
+[링크1](https://www.linkedin.com/pulse/difference-between-inject-vs-autowire-resource-pankaj-kumar), [링크2](https://www.sourceallies.com/2011/08/spring-injection-with-resource-and-autowired/#more-2350)
+
+* Java 파일을 이용한 빈 설정
+  * @Configuration을 클래스에 붙여줘야 한다
+  * @Configutation은 해당 클래스가 설정파일임을 알려준다
+
+* Setter 주입 VS Constructor 주입
+  * Setter 주입을 받게 되면 주입 받는 클래스 내부에서 애노테이션을 통한 주입을 받을 수 있다, 그러나 생성자 주입을 받는 객체는 생성자에서 넘어온 객체를 통해서만 주입받을 수 있다
+
+* @SpringBootApplication 애노테이션은 ApplicationContext를 대신 생성해준다
