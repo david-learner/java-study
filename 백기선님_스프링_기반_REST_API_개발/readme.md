@@ -18,7 +18,7 @@ deview 2017의 [그런 REST API로 괜찮은가](https://www.youtube.com/watch?v
 * 각자의 상황과 환경에 맞는 방식으로 접근하라
 * 내가 spring security를 이용해서 oauth로 로그인을 구현한다고 해서 꼭 spring security를 쓰는 게 아니라 각자의 언어나 개발환경에 따라 사용자 로그인이라는 목적을 달성하면 된다. 즉, **무엇을 하려는지 의도에 집중해라**
 
-#### REST의 self-descriptive message란
+#### (영상) REST의 self-descriptive message란
 
 * 메시지에서 주어진 것만으로 메시지의 내용을 모두 해석할 수 있어야 한다
 * Content-Type:applicaion/json 은 기호들만 해석가능하고 키값은 해석할 수 없다. 그래서 self-descriptive 하지 않다
