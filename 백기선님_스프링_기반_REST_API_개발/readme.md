@@ -38,7 +38,7 @@ deview 2017의 [그런 REST API로 괜찮은가](https://www.youtube.com/watch?v
 
 #### 롬복
 
-* 롬복에서 equalsAndHashcode에서 of = id로만 한다
+* 롬복에서 `@EqualsAndHashcode`에서 옵션을 `of = id`로 제한한다
   * eqauls와 hashcode 자동생성될 때 기본값은 모든 필드를 가지고 생성한다
   * 이 때 순환참조가 발생할 수 있고, 이로인해 스택오버플로우가 발생한다
   * 그래서 생성될 때 비교 기준이 되는 것을 id로 제한한다
