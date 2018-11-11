@@ -169,13 +169,13 @@ Event event = modelMapper.map(eventDto, Event.class);
 
 #### 클라이언트 id,secret을 외부 설정파일로 빼는 방법
 
-(넋놓고 보느라 기록을 못 했네요)
+(넋놓고 보느라 기록을 못했네요)
 
 #### 응답으로 주는 json에 사용자의 password가 실려갈 때 어떻게 할 것인가
 
 * serializer를 만들어 쓸거다
 * AccountSerializer
-* 주의 @JasonSerializer에서 faster를 import해줘야 한다
+* 주의 @JsonSerializer에서 fasterxml로 시작하는 패키지를 import해줘야 한다
 
 #### 오늘 한 것들
 
