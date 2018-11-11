@@ -165,7 +165,7 @@ Event event = modelMapper.map(eventDto, Event.class);
 
 * 대략 6가지 정도가 있음
 * password-grant type은 서비스를 제공하는 입장에서만 사용해야 한다. 사용자의 password가 토큰에 입력되어야 하기 때문이다
-* 생성자 주입을 받다가 순환참조가 발생하면 일단 autowired로 필드 주입을 받으면 순환참조는 끊킨다
+* 생성자 주입을 받다가 순환참조가 발생했을 때, 일단 autowired로 필드 주입을 받으면 순환참조는 끊긴다
 
 #### 클라이언트 id,secret을 외부 설정파일로 빼는 방법
 
