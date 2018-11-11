@@ -202,4 +202,3 @@ http://seanzhou1023.blogspot.com/2015/10/4-spring-in-action-aspect-oriented.html
 * 싱글톤의 경우 thread-safe하게 코딩해야 한다
 * 단점은 애플리케이션 구동시 싱글톤으로 지정된 빈을 다 만들어야 해서 구동시간이 길어질 수 있다
 
-
