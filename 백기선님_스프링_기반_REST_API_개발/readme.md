@@ -106,7 +106,7 @@ Event event = modelMapper.map(eventDto, Event.class);
 
 #### 스프링 HATEOAS
 
-* 리소스 - 데이터와 링크가 들어있다
+* Resource - 데이터와 링크가 들어있다
   * 우리가 보낼 데이터(Event객체)를 Resource객체(spring hateoas)로 감싸야 한다
   * 데이터(Event객체)를 Resource에 넣고 데이터에 대한 링크도 추가하자
   * 링크 추가 방법
