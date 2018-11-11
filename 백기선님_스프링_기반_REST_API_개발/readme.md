@@ -59,15 +59,16 @@ deview 2017의 [그런 REST API로 괜찮은가](https://www.youtube.com/watch?v
 
 계층(layer)별 테스트
 
-* 스프링 부트 - 계층별 테스트 만드는 데 유용한 애노테이션
-* 웹과 관련된 애들만 테스트하고 싶다면? WebMvcTest
-* 이 때 웹과 관련된 빈만 등록되고 repository등 관련없는 빈들은 등록되지 않는다
-
+* 스프링 부트에서는 계층별 테스트 만드는 데 유용한 애노테이션을 제공한다
+* 웹과 관련된 것들만 테스트하고 싶다면? `@WebMvcTest`
+  * 이 때 웹과 관련된 빈만 등록되고 repository등 관련없는 빈들은 등록되지 않는다
+* JPA의 경우 `@DataJpaTest`
+  
 * Created(201) 응답을 보낼 때에는 header의 location에 uri를 줘야 한다
   * HATEOAS가 제공하는 linkTo를 사용해서 uri를 만든다
 * ObjectMapper를 주입받아서 Event객체를 String화해서 요청을 보낸다
 * id를 Long이 아닌 Integer로 해도 21억개를 확보할 수 있다
-* Event savedEvent = repository.save(event) 이후에 event 객체를 쓰면 제대로 동작하지 않는 경우가 있다, savedEvent를 이후에 써주는 게 좋다
+* Event savedEvent = repository.save(event) 이후에 event를 쓰면 제대로 동작하지 않는 경우가 있다. 저장한 뒤 event와 관련된 작업을 할거라면 savedEvent를 사용하자
 
 ``` java
 // eventService
@@ -77,8 +78,8 @@ public Event example(Event event) {
 }
 ```
 
-* DTO를 도메인 객체로 복사
-  * ModelMapper 의존성 추가하고 빈으로 등록하고 사용하기
+* DTO를 도메인 객체로 쉽게 복사하기
+  * ModelMapper 의존성 추가하여 사용
 
 ``` java
 Event event = modelMapper.map(eventDto, Event.class);
@@ -92,7 +93,7 @@ Event event = modelMapper.map(eventDto, Event.class);
 
 * domain validation - 입력 값이 DTO라면..?
 * DTO에 대한 validator를 만든다
-* 에러 발생 상황에 대한 테스트를 만들 때, 에러 발생하는 코드에 브레이크포인트 찍어두고 에러 객체를 까서(?) 뭐가 들었는지 보면서 테스트를 만든다
+* 에러 발생 상황에 대한 테스트를 만들 때, 에러 발생하는 코드에 브레이크포인트 찍어두고 디버깅 중 에러 객체를 까보고 뭐가 들었는지 보면서 테스트를 만든다
 
 #### Erros
 
