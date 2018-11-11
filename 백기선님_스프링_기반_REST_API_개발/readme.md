@@ -2,7 +2,7 @@
 
 강연정보
 
-* 강연자 : 백기선님
+* 강연자 : [백기선님](https://www.facebook.com/whiteship)
 * 강연 슬라이드 : [링크](https://www.slideshare.net/whiteship/rest-api-development-with-spring)
 * 소스코드 저장소 : [링크](https://github.com/keesun/study/tree/master/ksug201811restapi)
 * 강연안내 : [링크](http://www.ksug.org/seminar/20181110)
