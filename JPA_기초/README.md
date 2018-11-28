@@ -60,7 +60,7 @@
 
 |![jpa_internal](images/jpa_internal.jpg)|
 |:--:|
-|*https://www.developer.com/java/data/how-to-manage-data-persistence-with-mongodb-and-jpa.html*|
+|*[how-to-manage-data-persistence-with-mongodb-and-jpa](https://www.developer.com/java/data/how-to-manage-data-persistence-with-mongodb-and-jpa.html)*|
 
   * 단순히 쿼리만 대신 짜는 게 아니라 패러다임 불일치를 해결한다
     * DB에서 데이터를 조회할 경우 해당 데이터를 반환하는게 아니라 반환되는 데이터에 해당 하는 객체에 데이터를 담아서 객체를 반환한다
