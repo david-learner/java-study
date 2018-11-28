@@ -57,9 +57,11 @@
 * JPA
   * 자바 진영 ORM 표준
   * java 애플리케이션과 jdbc 사이에서 동작한다
-    |![jpa_internal](images/jpa_internal.jpg)|
-    |:--:|
-    |*https://www.developer.com/java/data/how-to-manage-data-persistence-with-mongodb-and-jpa.html*|
+
+|![jpa_internal](images/jpa_internal.jpg)|
+|:--:|
+|*https://www.developer.com/java/data/how-to-manage-data-persistence-with-mongodb-and-jpa.html*|
+
   * 단순히 쿼리만 대신 짜는 게 아니라 패러다임 불일치를 해결한다
     * DB에서 데이터를 조회할 경우 해당 데이터를 반환하는게 아니라 반환되는 데이터에 해당 하는 객체에 데이터를 담아서 객체를 반환한다
   * EJB의 엔티티 빈(JPA 초창기 기술, 자바 표준) -> 하이버네이트(오픈 소스) -> JPA(자바 표준)
