@@ -36,6 +36,17 @@
 
 * 클래스파일(.class)
 * 바이트코드
+* native
+  * JNI(Java Native Interface)를 사용하는 native code로 작성된 메서드에 붙이는 접근제어자(modifier)
+  * 오직 메서드에만 붙일 수 있다
+  * C나 C++로 작성된 메서드는 native method 또는 foreign method 라고 부른다
+  * native 키워드의 목적
+    * 시스템의 성능 향샹
+    * To achieve misson level / memory level communication
+    * 자바가 아닌 언어로 작성된 기존 코드를 사용하기 위해서
+* reference
+  * 레퍼런스란 메모리에 저장된 객체의 위치를 가르키는 것이다
+  * C나 C++에서 사용되는 pointer와 100% 동일하지 않다 (pointer vs reference에 대해 조사하기 [링크](https://stackoverflow.com/questions/57483/what-are-the-differences-between-a-pointer-variable-and-a-reference-variable-in))
 
 * 참고
   * Tomcat : http://limmmee.tistory.com/4
@@ -44,4 +55,4 @@
   * JPA : https://en.wikipedia.org/wiki/Java_Persistence_API
   * JPA : 책<자바 ORM 표준 JPA 프로그래밍>, 9p
   * ORM : https://en.wikipedia.org/wiki/Object-relational_mapping
-  * 
+  * native : https://www.geeksforgeeks.org/native-keyword-java/
