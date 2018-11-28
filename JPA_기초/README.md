@@ -5,6 +5,7 @@
 * 김영한님
 * 우아한 형제들 재직중
 * 저서 [<자바 ORM 표준 JPA 프로그래밍>](http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788960777330&orderClick=LAG&Kc=) (a.k.a. 국내 JPA 바이블)
+
 ![book_cover](images/cover.jpg)
 
 일시 및 장소
@@ -240,14 +241,16 @@
 > * 아래와 같이 연관관계가 매핑된다면 외래 키는 어느 테이블에 생성될까? Member 테이블일까, Team테이블일까?
 > * Member 테이블에 생성된다. 만약 Team 테이블에 외래 키가 생성된다면 다음과 같은 문제가 발생한다
 
-MEMBER TABLE
+##### MEMBER TABLE
+
 ID|MEMBER_NAME
 --|-----------
 1 |david
 2 |joseph
 3 |ruth
 
-TEAM TABLE
+##### TEAM TABLE
+
 ID|TEAM_NAME|MEMBER_ID
 --|---------|---------
 
