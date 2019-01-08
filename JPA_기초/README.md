@@ -169,8 +169,8 @@
     * [우아한형제들 기술블로그 이동욱님 글 참고](http://woowabros.github.io/tools/2017/07/10/java-enum-uses.html)
 * @Temporal : 날짜 맵핑할 때 사용한다
 * @Lob : 컨텐츠 길이가 긴 경우 DB에 데이터를 바이너리로 밀어넣을 때 사용한다, 타입을 String으로 쓰면 CLOB, Byte를 쓰면 BLOB
-    > * CLOB : 대용량의 문자 기반 데이터를 저장하는 데 적합하다
-    > * BLOB : 대용량의 바이너리 데이터를 저장하는 데 적합하다, 사진, 동영상 등의 자료를 바이너리화해서 DB에 넣을 때 사용하는 타입이다
+    > * [CLOB](https://techterms.com/definition/clob) : 대용량의 문자 기반 데이터를 저장하는 데 적합하다
+    > * [BLOB](https://techterms.com/definition/blob) : 대용량의 바이너리 데이터를 저장하는 데 적합하다, 사진, 동영상 등의 자료를 바이너리화해서 DB에 넣을 때 사용하는 타입이다
 * @Transient : DB에 매핑하고 싶지 않은 필드에 사용한다
 #### 키 생성 전략
 * 직접 할당 : 기본 키를 애플리케이션에서 직접 할당한다
