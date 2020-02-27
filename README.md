@@ -1,5 +1,5 @@
-# Java Study
+# study
 
-Java와 관련된 것을 학습한 후 Tistory(Blog)에 포스팅하기 위한 글을 모아둔 곳입니다.
+학습한 내용을 티스토리 블로그에 포스팅하기 위해 모아둔 마크다운 글입니다.
 
-Tistory(Blog) URL : http://hardlearner.tistory.com
+블로그: [hardlearner.tistory.com](hardlearner.tistory.com)
